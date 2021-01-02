@@ -1,0 +1,11 @@
+[package]
+name = "rpine"
+version = "0.1.0"
+authors = ["Rohan Jain <crodjer@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+async-std = { version = "1.8.0", features = ["attributes"] }
+futures-lite = "1.11.3"
+futures-timer = "3.0.2"
+heim = { version = "0.1.0-rc.1", features = ["full"] }
