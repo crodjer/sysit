@@ -1,13 +1,34 @@
 use async_std;
+use clap::Clap;
 use futures_lite::stream::StreamExt;
 use futures_timer::Delay;
 use heim::cpu;
 use heim::memory;
 use heim::sensors;
 use heim::units::ratio;
+use std::io::stdout;
+use std::io::Write;
 use std::time::Duration;
 
 const KELVIN_TO_CELSIUS: f32 = 273.15;
+
+/// Get basic system information in one line.
+/// For more information use --help
+#[derive(Clap)]
+#[clap(version = "0.1", author = "Rohan <crodjer@gmail.com>")]
+struct Opts {
+    /// Run in watch mode. Will act as if running with the watch command.
+    #[clap(short, long)]
+    watch: bool,
+
+    /// Run in log mode. Will continuously append a row to standard output.
+    #[clap(short, long)]
+    log: bool,
+
+    /// Specify update interval in seconds for watch/log mode.
+    #[clap(short, long, default_value = "1")]
+    interval: u64,
+}
 
 async fn mem_usage() -> Result<String, heim::Error> {
     let memory = memory::memory().await?;
@@ -67,8 +88,28 @@ async fn line() -> Result<String, heim::Error> {
     ))
 }
 
+async fn render_line() -> Result<(), heim::Error> {
+    print!("{}", line().await?);
+    Ok(())
+}
+
 #[async_std::main]
 async fn main() -> Result<(), heim::Error> {
-    println!("{}", line().await?);
+    let opts: Opts = Opts::parse();
+
+    if opts.watch || opts.log {
+        loop {
+            render_line().await?;
+            stdout().flush()?;
+            Delay::new(Duration::from_secs(opts.interval)).await;
+            if opts.log {
+                print!("\n");
+            } else {
+                print!("\r");
+            }
+        }
+    } else {
+        render_line().await?;
+    }
     Ok(())
 }
