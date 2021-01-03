@@ -40,9 +40,10 @@ async fn mem_usage() -> Result<String, heim::Error> {
 
 async fn cpu_usage() -> Result<String, heim::Error> {
     let measurement_1 = cpu::usage().await?;
-    Delay::new(Duration::from_millis(150)).await;
+    Delay::new(Duration::from_millis(100)).await;
     let measurement_2 = cpu::usage().await?;
-    let usage = (measurement_2 - measurement_1).get::<ratio::percent>();
+    let num_cpu = cpu::logical_count().await? as f32;
+    let usage = (measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu;
     Ok(format!("{:.0}%", usage))
 }
 
