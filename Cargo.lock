@@ -970,17 +970,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rpine"
-version = "0.1.0"
-dependencies = [
- "async-std",
- "clap",
- "futures-lite",
- "futures-timer",
- "heim",
-]
-
-[[package]]
 name = "rustc_version"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1062,6 +1051,17 @@ dependencies = [
  "proc-macro2",
  "quote",
  "unicode-xid",
+]
+
+[[package]]
+name = "sysit"
+version = "0.1.0"
+dependencies = [
+ "async-std",
+ "clap",
+ "futures-lite",
+ "futures-timer",
+ "heim",
 ]
 
 [[package]]
