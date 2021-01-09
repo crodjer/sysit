@@ -15,7 +15,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Clone
+      uses: actions/checkout@v2
+    - name: Cache
+      uses: actions/cache@v2.1.3
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargon/registry
+        key: ${{ runner.os }}
     - name: Build
       run: cargo build --verbose
     - name: Run tests
