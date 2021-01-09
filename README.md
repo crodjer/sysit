@@ -10,7 +10,6 @@ get all the relevant system information.
 
 ```
 sysit 0.1
-Rohan <crodjer@gmail.com>
 Get basic system information in one line. For more information use --help
 
 USAGE:

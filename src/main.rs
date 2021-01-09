@@ -32,7 +32,7 @@ const KELVIN_TO_CELSIUS: f32 = 273.15;
 /// Get basic system information in one line.
 /// For more information use --help
 #[derive(Clap)]
-#[clap(version = "0.1", author = "Rohan <crodjer@gmail.com>")]
+#[clap()]
 struct Opts {
     /// Run in watch mode. Will act as if running with the watch command.
     #[clap(short, long)]
