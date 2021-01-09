@@ -1,6 +1,8 @@
 # Sysit
 System Sit, check on the system with a quick glance!
 
+[![Crate](https://img.shields.io/crates/v/sysit.svg)](https://crates.io/crates/sysit)
+
 ## About
 Provides basic system information in a short amount of text, ideally
 within 40 characters. Relies on [heim](https://heim-rs.github.io/) to
