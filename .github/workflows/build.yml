@@ -28,6 +28,8 @@ jobs:
           ~/.cargo/bin/
           ~/.cargon/registry
         key: ${{ runner.os }}-${{ matrix.rust-toolchain }}
+    - name: Install Rust
+      run: rustup install ${{ matrix.rust-toolchain }}
     - name: Build
       run: cargo +${{ matrix.rust-toolchain }} build --verbose
     - name: Run tests
