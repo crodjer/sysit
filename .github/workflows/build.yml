@@ -22,6 +22,6 @@ jobs:
 
       - name: Cargo Check
         run: cargo check
-        
-      - name: Cargo Run
-        run: cargo run
+
+      - name: Cargo Publish
+        run: cargo publish
