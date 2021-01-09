@@ -2,6 +2,7 @@
 System Sit, check on the system with a quick glance!
 
 [![Crate](https://img.shields.io/crates/v/sysit.svg)](https://crates.io/crates/sysit)
+[![Build](https://github.com/crodjer/sysit/workflows/CI/badge.svg?branch=main)](https://github.com/crodjer/sysit/actions?workflow=CI)
 
 ## About
 Provides basic system information in a short amount of text, ideally
