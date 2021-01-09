@@ -27,10 +27,13 @@ jobs:
         path: |
           ~/.cargo/bin/
           ~/.cargon/registry
+          ~/.rustup/
         key: ${{ runner.os }}-${{ matrix.rust-toolchain }}
     - name: Install Rust
-      run: rustup install ${{ matrix.rust-toolchain }}
+      run: |
+        rustup install ${{ matrix.rust-toolchain }}
+        rustup default ${{ matrix.rust-toolchain }}
     - name: Build
-      run: cargo +${{ matrix.rust-toolchain }} build --verbose
+      run: cargo build --verbose
     - name: Run tests
-      run: cargo +${{ matrix.rust-toolchain }} test --verbose
+      run: cargo test --verbose
