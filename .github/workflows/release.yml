@@ -10,7 +10,7 @@ env:
 
 jobs:
   release:
-    name: release
+    name: Publish
     runs-on: ubuntu-20.04
     steps:
     - name: Clone
