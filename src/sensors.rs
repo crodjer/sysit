@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use super::colors::colorize;
 use futures_lite::stream::StreamExt;
 use heim::sensors;
 
@@ -46,6 +47,6 @@ async fn max_temperature() -> Result<Option<f32>, heim::Error> {
 pub async fn temperature() -> Result<String, heim::Error> {
     Ok(max_temperature()
         .await?
-        .map(|t| format!("{:.2}°C", t))
+        .map(|t| format!("{}°C", colorize(t, 75.0, 55.0)))
         .unwrap_or(String::from("N/A")))
 }
