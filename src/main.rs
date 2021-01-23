@@ -17,117 +17,51 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use async_std;
 use clap::Clap;
-use futures_lite::stream::StreamExt;
 use futures_timer::Delay;
-use heim::cpu;
-use heim::memory;
-use heim::sensors;
-use heim::units::ratio;
 use std::io::stdout;
 use std::io::Write;
 use std::time::Duration;
 
-const KELVIN_TO_CELSIUS: f32 = 273.15;
+use sysit::config::Config;
+use sysit::cpu;
+use sysit::memory;
+use sysit::sensors;
 
-/// Get basic system information in one line.
-/// For more information use --help
-#[derive(Clap)]
-#[clap()]
-struct Opts {
-    /// Run in watch mode. Will act as if running with the watch command.
-    #[clap(short, long)]
-    watch: bool,
-
-    /// Run in log mode. Will continuously append a row to standard output.
-    #[clap(short, long)]
-    log: bool,
-
-    /// Specify update interval in seconds for watch/log mode.
-    #[clap(short, long, default_value = "1")]
-    interval: u64,
-}
-
-async fn mem_usage() -> Result<String, heim::Error> {
-    let memory = memory::memory().await?;
-    let total = memory.total().value as f32;
-    let free = memory.available().value as f32;
-    let usage = (100.0 * (total - free) / total).round();
-    Ok(format!("{:.0}%", usage))
-}
-
-async fn cpu_usage() -> Result<String, heim::Error> {
-    let measurement_1 = cpu::usage().await?;
-    Delay::new(Duration::from_millis(100)).await;
-    let measurement_2 = cpu::usage().await?;
-    let num_cpu = cpu::logical_count().await? as f32;
-    let usage = (measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu;
-    Ok(format!("{:.0}%", usage))
-}
-
-async fn cpu_freq() -> Result<String, heim::Error> {
-    Ok(format!(
-        "{} MHz",
-        (cpu::frequency().await?.current().value as f32 / 1000_000.0).round()
-    ))
-}
-
-async fn temperature() -> Result<String, heim::Error> {
-    let mut sensor_data = sensors::temperatures().boxed_local();
-    let mut max_temp: Option<f32> = None;
-
-    while let Some(sensor) = sensor_data.next().await {
-        if let Ok(sensor) = sensor {
-            let temp = (sensor.current().value - KELVIN_TO_CELSIUS).round();
-            max_temp = match max_temp {
-                Some(current_max) => {
-                    if temp > current_max {
-                        Some(temp)
-                    } else {
-                        None
-                    }
-                }
-                None => Some(temp),
-            };
-        }
-    }
-
-    Ok(max_temp
-        .map(|t| format!("{}°C", t))
-        .unwrap_or(String::from("N/A")))
-}
+const NEW_LINE: char = '\n';
+const CARRIAGE_RETURN: char = '\r';
 
 async fn line() -> Result<String, heim::Error> {
     Ok(format!(
         "M: {} | C: {} @ {} | T: {}",
-        mem_usage().await?,
-        cpu_usage().await?,
-        cpu_freq().await?,
-        temperature().await?
+        memory::usage().await?,
+        cpu::usage().await?,
+        cpu::frequency().await?,
+        sensors::temperature().await?
     ))
 }
 
-async fn render_line() -> Result<(), heim::Error> {
-    print!("{}", line().await?);
+async fn render_line(delimiter: char) -> Result<(), heim::Error> {
+    print!("{}{}", line().await?, delimiter);
     Ok(())
 }
 
 #[async_std::main]
 async fn main() -> Result<(), heim::Error> {
-    let opts: Opts = Opts::parse();
+    let config: Config = Config::parse();
 
-    if opts.watch || opts.log {
+    if config.watch || config.log {
         loop {
-            render_line().await?;
-            stdout().flush()?;
-            Delay::new(Duration::from_secs(opts.interval)).await;
-            if opts.log {
-                print!("\n");
+            let delimiter = if config.log {
+                NEW_LINE
             } else {
-                print!("\r");
-            }
+                CARRIAGE_RETURN
+            };
+            render_line(delimiter).await?;
+            stdout().flush()?;
+            Delay::new(Duration::from_secs(config.interval)).await;
         }
     } else {
-        render_line().await?;
+        render_line(NEW_LINE).await?;
     }
     Ok(())
 }
