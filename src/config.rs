@@ -20,7 +20,7 @@ use clap::Clap;
 /// Get basic system information in one line.
 /// For more information use --help
 #[derive(Clap)]
-#[clap()]
+#[clap(version = env!("CARGO_PKG_VERSION"), author = "Rohan Jain")]
 pub struct Config {
     /// Run in watch mode. Will act as if running with the watch command.
     #[clap(short, long)]
