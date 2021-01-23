@@ -15,6 +15,7 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use super::colors::colorize;
 use heim::memory;
 
 pub async fn usage() -> Result<String, heim::Error> {
@@ -22,5 +23,5 @@ pub async fn usage() -> Result<String, heim::Error> {
     let total = memory.total().value as f32;
     let free = memory.available().value as f32;
     let usage = (100.0 * (total - free) / total).round();
-    Ok(format!("{:.0}%", usage))
+    Ok(format!("{}%", colorize(usage, 80.0, 50.0)))
 }

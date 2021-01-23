@@ -15,24 +15,36 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use super::colors::colorize;
-use futures_timer::Delay;
-use heim::cpu;
-use heim::units::ratio;
-use std::time::Duration;
+use colored::*;
 
-pub async fn usage() -> Result<String, heim::Error> {
-    let measurement_1 = cpu::usage().await?;
-    Delay::new(Duration::from_millis(100)).await;
-    let measurement_2 = cpu::usage().await?;
-    let num_cpu = cpu::logical_count().await? as f32;
-    let usage = (measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu;
-    Ok(format!("{}%", colorize(usage, 80.0, 50.0)))
+pub fn colorize(metric: f32, high: f32, mid: f32) -> String {
+    let color = if metric > high {
+        "red"
+    } else if metric > mid {
+        "yellow"
+    } else {
+        "green"
+    };
+
+    format!("{:.0}", metric as i32).color(color).to_string()
 }
 
-pub async fn frequency() -> Result<String, heim::Error> {
-    Ok(format!(
-        "{} MHz",
-        (cpu::frequency().await?.current().value as f32 / 1000_000.0).round()
-    ))
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_red() {
+        assert_eq!(colorize(90.0, 80.0, 50.0), "90".red().to_string());
+    }
+
+    #[test]
+    fn test_yellow() {
+        assert_eq!(colorize(75.0, 80.0, 50.0), "75".yellow().to_string());
+    }
+
+    #[test]
+    fn test_green() {
+        assert_eq!(colorize(15.0, 80.0, 50.0), "15".green().to_string());
+    }
 }
