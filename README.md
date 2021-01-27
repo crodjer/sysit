@@ -5,25 +5,55 @@ System Sit, check on the system with a quick glance!
 [![Build](https://github.com/crodjer/sysit/workflows/CI/badge.svg?branch=main)](https://github.com/crodjer/sysit/actions?workflow=CI)
 
 ## About
-Provides basic system information in a short amount of text, ideally
-within 40 characters. Relies on [heim](https://heim-rs.github.io/) to
-get all the relevant system information.
+System resources overview within 40 characters. Relies on
+[heim](https://heim-rs.github.io/) to get all the relevant system
+information.
 
+![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
+
+### Usage
 ```
-sysit 0.1
-Get basic system information in one line. For more information use --help
+sysit
+Get system resources overview in 40 characters. For usage details, try --help
 
 USAGE:
     sysit [FLAGS] [OPTIONS]
 
 FLAGS:
-    -h, --help       Prints help information
-    -l, --log        Run in log mode. Will continuously append a row to standard output
-    -V, --version    Prints version information
-    -w, --watch      Run in watch mode. Will act as if running with the watch command
+    -c, --colors       force output to be always colorized
+    -h, --help         Prints help information
+    -l, --log          run in log mode (will continuously append a row to standard output)
+        --no-colors    force output to be never colorized
+    -V, --version      Prints version information
+    -w, --watch        run in watch mode (will act as if running with the watch)
 
 OPTIONS:
-    -i, --interval <interval>    Specify update interval in seconds for watch/log mode [default: 1]
+    -i, --interval <interval>
+            update interval in seconds for watch/log mode [default: 1]
+
+        --threshold-cpu-high <threshold-cpu-high>
+            the threshold for high cpu usage. (higher values will be rendered in red) [default:
+            80.0]
+
+        --threshold-cpu-medium <threshold-cpu-medium>
+            the threshold for medium cpu usage. (higher values will be rendered in yellow) [default:
+            50.0]
+
+        --threshold-memory-high <threshold-memory-high>
+            the threshold for high memory usage. (higher values will be rendered in red) [default:
+            80.0]
+
+        --threshold-memory-medium <threshold-memory-medium>
+            the threshold for medium memory usage. (higher values will be rendered in yellow)
+            [default: 50.0]
+
+        --threshold-temp-hot <threshold-temp-hot>
+            the threshold for high temperature (higher values will be rendered in red) [default:
+            75.0]
+
+        --threshold-temp-warm <threshold-temp-warm>
+            the threshold for warm temperature (higher values will be rendered in yellow) [default:
+            55.0]
 
 ```
 
@@ -62,7 +92,7 @@ Watch mode with `sysit -wi 2` has a benefit of maintaining a single
 process. Just using plain `sysit` command will also work, but that'd
 mean tmux spawns a new process every time.
 
-![sysit with tmux](assets/sysit-on-tmux.png?raw=true "sysit with tmux")
+![sysit with tmux](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-on-tmux.png)
 
 ### Log Mode
 At times it can be handy to log system stats, for instance, while
