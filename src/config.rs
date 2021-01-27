@@ -32,7 +32,7 @@ pub struct Config {
     #[clap(short, long)]
     pub log: bool,
 
-    /// update interval in seconds for watch/log mode.
+    /// update interval in seconds for watch/log mode
     #[clap(short, long, default_value = "1")]
     pub interval: u64,
 
@@ -54,22 +54,22 @@ pub struct Config {
     #[clap(long, default_value = "75.0")]
     pub threshold_temp_hot: f32,
 
-    /// the threshold for medium memory usage.
+    /// the threshold for medium memory usage
     /// (higher values will be rendered in yellow)
     #[clap(long, default_value = "50.0")]
     pub threshold_memory_medium: f32,
 
-    /// the threshold for high memory usage.
+    /// the threshold for high memory usage
     /// (higher values will be rendered in red)
     #[clap(long, default_value = "80.0")]
     pub threshold_memory_high: f32,
 
-    /// the threshold for medium cpu usage.
+    /// the threshold for medium cpu usage
     /// (higher values will be rendered in yellow)
     #[clap(long, default_value = "50.0")]
     pub threshold_cpu_medium: f32,
 
-    /// the threshold for high cpu usage.
+    /// the threshold for high cpu usage
     /// (higher values will be rendered in red)
     #[clap(long, default_value = "80.0")]
     pub threshold_cpu_high: f32,
