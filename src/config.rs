@@ -17,8 +17,8 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use clap::Clap;
 
-/// Get basic system information in one line.
-/// For more information use --help
+/// Get system resources overview in 40 characters
+/// For usage details, try --help
 #[derive(Clap)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Rohan Jain")]
 pub struct Config {
