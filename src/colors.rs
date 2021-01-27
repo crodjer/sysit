@@ -26,7 +26,7 @@ pub fn colorize(metric: f32, high: f32, mid: f32) -> String {
         "green"
     };
 
-    format!("{:.0}", metric as i32).color(color).to_string()
+    format!("{:3.0}", metric as i32).color(color).to_string()
 }
 
 #[cfg(test)]
@@ -35,16 +35,26 @@ mod tests {
 
     #[test]
     fn test_red() {
-        assert_eq!(colorize(90.0, 80.0, 50.0), "90".red().to_string());
+        assert_eq!(colorize(90.0, 80.0, 50.0), " 90".red().to_string());
     }
 
     #[test]
     fn test_yellow() {
-        assert_eq!(colorize(75.0, 80.0, 50.0), "75".yellow().to_string());
+        assert_eq!(colorize(75.0, 80.0, 50.0), " 75".yellow().to_string());
     }
 
     #[test]
     fn test_green() {
-        assert_eq!(colorize(15.0, 80.0, 50.0), "15".green().to_string());
+        assert_eq!(colorize(15.0, 80.0, 50.0), " 15".green().to_string());
+    }
+
+    #[test]
+    fn test_one_digit() {
+        assert_eq!(colorize(1.0, 80.0, 50.0), "  1".green().to_string());
+    }
+
+    #[test]
+    fn test_three_digit() {
+        assert_eq!(colorize(100.0, 80.0, 50.0), "100".red().to_string());
     }
 }
