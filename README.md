@@ -31,19 +31,19 @@ OPTIONS:
             update interval in seconds for watch/log mode [default: 1]
 
         --threshold-cpu-high <threshold-cpu-high>
-            the threshold for high cpu usage. (higher values will be rendered in red) [default:
+            the threshold for high cpu usage (higher values will be rendered in red) [default:
             80.0]
 
         --threshold-cpu-medium <threshold-cpu-medium>
-            the threshold for medium cpu usage. (higher values will be rendered in yellow) [default:
+            the threshold for medium cpu usage (higher values will be rendered in yellow) [default:
             50.0]
 
         --threshold-memory-high <threshold-memory-high>
-            the threshold for high memory usage. (higher values will be rendered in red) [default:
+            the threshold for high memory usage (higher values will be rendered in red) [default:
             80.0]
 
         --threshold-memory-medium <threshold-memory-medium>
-            the threshold for medium memory usage. (higher values will be rendered in yellow)
+            the threshold for medium memory usage (higher values will be rendered in yellow)
             [default: 50.0]
 
         --threshold-temp-hot <threshold-temp-hot>
