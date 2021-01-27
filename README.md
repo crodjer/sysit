@@ -11,7 +11,6 @@ information.
 
 ![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
 
-### Usage
 ```
 sysit
 Get system resources overview in 40 characters. For usage details, try --help
