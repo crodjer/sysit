@@ -20,6 +20,7 @@ use super::config::Config;
 use futures_timer::Delay;
 use heim::cpu;
 use heim::units::ratio;
+use std::cmp;
 use std::time::Duration;
 
 pub async fn usage(config: &Config) -> Result<String, heim::Error> {
@@ -27,11 +28,14 @@ pub async fn usage(config: &Config) -> Result<String, heim::Error> {
     Delay::new(Duration::from_millis(100)).await;
     let measurement_2 = cpu::usage().await?;
     let num_cpu = cpu::logical_count().await? as f32;
-    let usage = (measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu;
+    let usage = cmp::min(
+        100,
+        ((measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu).round() as i32,
+    );
     Ok(format!(
         "{}%",
         colorize(
-            usage,
+            usage as f32,
             config.threshold_cpu_high,
             config.threshold_cpu_medium
         )
