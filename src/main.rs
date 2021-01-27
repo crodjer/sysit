@@ -27,27 +27,35 @@ use sysit::cpu;
 use sysit::memory;
 use sysit::sensors;
 
+use colored::control::set_override;
+
 const NEW_LINE: char = '\n';
 const CARRIAGE_RETURN: char = '\r';
 
-async fn line() -> Result<String, heim::Error> {
+async fn line(config: &Config) -> Result<String, heim::Error> {
     Ok(format!(
-        "M: {} | C: {} @ {} | T: {}",
-        memory::usage().await?,
-        cpu::usage().await?,
+        "M:{} | C:{} @ {} | T:{}",
+        memory::usage(config).await?,
+        cpu::usage(config).await?,
         cpu::frequency().await?,
-        sensors::temperature().await?
+        sensors::temperature(config).await?
     ))
 }
 
-async fn render_line(delimiter: char) -> Result<(), heim::Error> {
-    print!("{}{}", line().await?, delimiter);
+async fn render_line(delimiter: char, config: &Config) -> Result<(), heim::Error> {
+    print!("{}{}", line(config).await?, delimiter);
     Ok(())
 }
 
 #[async_std::main]
 async fn main() -> Result<(), heim::Error> {
     let config: Config = Config::parse();
+
+    if config.colors {
+        set_override(true);
+    } else if config.no_colors {
+        set_override(false);
+    }
 
     if config.watch || config.log {
         loop {
@@ -56,12 +64,12 @@ async fn main() -> Result<(), heim::Error> {
             } else {
                 CARRIAGE_RETURN
             };
-            render_line(delimiter).await?;
+            render_line(delimiter, &config).await?;
             stdout().flush()?;
             Delay::new(Duration::from_secs(config.interval)).await;
         }
     } else {
-        render_line(NEW_LINE).await?;
+        render_line(NEW_LINE, &config).await?;
     }
     Ok(())
 }

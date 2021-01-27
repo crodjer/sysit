@@ -16,6 +16,7 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 use super::colors::colorize;
+use super::config::Config;
 use futures_lite::stream::StreamExt;
 use heim::sensors;
 
@@ -44,9 +45,14 @@ async fn max_temperature() -> Result<Option<f32>, heim::Error> {
     Ok(max_temp)
 }
 
-pub async fn temperature() -> Result<String, heim::Error> {
+pub async fn temperature(config: &Config) -> Result<String, heim::Error> {
     Ok(max_temperature()
         .await?
-        .map(|t| format!("{}°C", colorize(t, 75.0, 55.0)))
+        .map(|t| {
+            format!(
+                "{}°C",
+                colorize(t, config.threshold_temp_hot, config.threshold_temp_warm)
+            )
+        })
         .unwrap_or(String::from("N/A")))
 }
