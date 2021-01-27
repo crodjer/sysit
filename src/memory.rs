@@ -16,12 +16,20 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 use super::colors::colorize;
+use super::config::Config;
 use heim::memory;
 
-pub async fn usage() -> Result<String, heim::Error> {
+pub async fn usage(config: &Config) -> Result<String, heim::Error> {
     let memory = memory::memory().await?;
     let total = memory.total().value as f32;
     let free = memory.available().value as f32;
     let usage = (100.0 * (total - free) / total).round();
-    Ok(format!("{}%", colorize(usage, 80.0, 50.0)))
+    Ok(format!(
+        "{}%",
+        colorize(
+            usage,
+            config.threshold_cpu_high,
+            config.threshold_cpu_medium
+        )
+    ))
 }
