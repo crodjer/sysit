@@ -22,15 +22,55 @@ use clap::Clap;
 #[derive(Clap)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Rohan Jain")]
 pub struct Config {
-    /// Run in watch mode. Will act as if running with the watch command.
+    /// run in watch mode
+    /// (will act as if running with the watch)
     #[clap(short, long)]
     pub watch: bool,
 
-    /// Run in log mode. Will continuously append a row to standard output.
+    /// run in log mode
+    /// (will continuously append a row to standard output)
     #[clap(short, long)]
     pub log: bool,
 
-    /// Specify update interval in seconds for watch/log mode.
+    /// update interval in seconds for watch/log mode.
     #[clap(short, long, default_value = "1")]
     pub interval: u64,
+
+    /// force output to be always colorized
+    #[clap(short, long)]
+    pub colors: bool,
+
+    /// force output to be never colorized
+    #[clap(long)]
+    pub no_colors: bool,
+
+    /// the threshold for warm temperature
+    /// (higher values will be rendered in yellow)
+    #[clap(long, default_value = "55.0")]
+    pub threshold_temp_warm: f32,
+
+    /// the threshold for high temperature
+    /// (higher values will be rendered in red)
+    #[clap(long, default_value = "75.0")]
+    pub threshold_temp_hot: f32,
+
+    /// the threshold for medium memory usage.
+    /// (higher values will be rendered in yellow)
+    #[clap(long, default_value = "50.0")]
+    pub threshold_memory_medium: f32,
+
+    /// the threshold for high memory usage.
+    /// (higher values will be rendered in red)
+    #[clap(long, default_value = "80.0")]
+    pub threshold_memory_high: f32,
+
+    /// the threshold for medium cpu usage.
+    /// (higher values will be rendered in yellow)
+    #[clap(long, default_value = "50.0")]
+    pub threshold_cpu_medium: f32,
+
+    /// the threshold for high cpu usage.
+    /// (higher values will be rendered in red)
+    #[clap(long, default_value = "80.0")]
+    pub threshold_cpu_high: f32,
 }
