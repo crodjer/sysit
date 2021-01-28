@@ -4,6 +4,12 @@ System Sit, check on the system with a quick glance!
 [![Crate](https://img.shields.io/crates/v/sysit.svg)](https://crates.io/crates/sysit)
 [![Build](https://github.com/crodjer/sysit/workflows/CI/badge.svg?branch=main)](https://github.com/crodjer/sysit/actions?workflow=CI)
 
+## Install
+
+```
+cargo install sysit
+```
+
 ## About
 System resources overview within 40 characters. Relies on
 [heim](https://heim-rs.github.io/) to get all the relevant system
