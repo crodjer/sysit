@@ -17,34 +17,23 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use super::colors::colorize;
 use super::config::Config;
-use futures_timer::Delay;
-use heim::cpu;
-use heim::units::ratio;
-use std::cmp;
-use std::time::Duration;
+use sysinfo::{ProcessorExt, System, SystemExt};
 
-pub async fn usage(config: &Config) -> Result<String, heim::Error> {
-    let measurement_1 = cpu::usage().await?;
-    Delay::new(Duration::from_millis(100)).await;
-    let measurement_2 = cpu::usage().await?;
-    let num_cpu = cpu::logical_count().await? as f32;
-    let usage = cmp::min(
-        100,
-        ((measurement_2 - measurement_1).get::<ratio::percent>() / num_cpu).round() as i32,
-    );
-    Ok(format!(
+pub fn usage(config: &Config, system: &System) -> String {
+    let processor = system.get_global_processor_info();
+
+    format!(
         "{}%",
         colorize(
-            usage as f32,
+            processor.get_cpu_usage(),
             config.threshold_cpu_high,
             config.threshold_cpu_medium
         )
-    ))
+    )
 }
 
-pub async fn frequency() -> Result<String, heim::Error> {
-    Ok(format!(
-        "{:4} MHz",
-        (cpu::frequency().await?.current().value as f32 / 1000_000.0).round()
-    ))
+pub fn frequency(system: &System) -> String {
+    let processor = system.get_global_processor_info();
+
+    format!("{:4} MHz", processor.get_frequency())
 }

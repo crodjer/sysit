@@ -17,42 +17,36 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use super::colors::colorize;
 use super::config::Config;
-use futures_lite::stream::StreamExt;
-use heim::sensors;
+use sysinfo::{ComponentExt, System, SystemExt};
 
-const KELVIN_TO_CELSIUS: f32 = 273.15;
-
-async fn max_temperature() -> Result<Option<f32>, heim::Error> {
-    let mut sensor_data = sensors::temperatures().boxed_local();
+fn max_temperature(system: &System) -> Option<f32> {
     let mut max_temp: Option<f32> = None;
 
-    while let Some(sensor) = sensor_data.next().await {
-        if let Ok(sensor) = sensor {
-            let temp = (sensor.current().value - KELVIN_TO_CELSIUS).round();
-            max_temp = match max_temp {
-                Some(current_max) => {
-                    if temp > current_max {
-                        Some(temp)
-                    } else {
-                        None
-                    }
+    for component in system.get_components() {
+        let temp = component.get_temperature();
+
+        max_temp = match max_temp {
+            Some(current_max) => {
+                if temp > current_max {
+                    Some(temp)
+                } else {
+                    Some(current_max)
                 }
-                None => Some(temp),
-            };
-        }
+            }
+            None => Some(temp),
+        };
     }
 
-    Ok(max_temp)
+    max_temp
 }
 
-pub async fn temperature(config: &Config) -> Result<String, heim::Error> {
-    Ok(max_temperature()
-        .await?
+pub fn temperature(config: &Config, system: &System) -> String {
+    max_temperature(system)
         .map(|t| {
             format!(
                 "{}°C",
                 colorize(t, config.threshold_temp_hot, config.threshold_temp_warm)
             )
         })
-        .unwrap_or(String::from("N/A")))
+        .unwrap_or(String::from("N/A"))
 }
