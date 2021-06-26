@@ -24,9 +24,6 @@ edition = "2018"
 license = "GPL-3.0-or-later"
 
 [dependencies]
-async-std = { version = "1.8.0", features = ["attributes"] }
 clap = "3.0.0-beta.2"
-futures-lite = "1.11.3"
-futures-timer = "3.0.2"
-heim = { version = "0.1.0-rc.1", features = ["cpu", "memory", "sensors"] }
-colored = "2"
+colored = "2.0.0"
+sysinfo = "0.18.2"

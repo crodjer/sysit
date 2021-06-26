@@ -15,13 +15,14 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use async_std;
 use clap::Clap;
-use futures_timer::Delay;
 use std::io::stdout;
+use std::io::Result;
 use std::io::Write;
+use std::thread;
 use std::time::Duration;
 
+use sysinfo::{System, SystemExt};
 use sysit::config::Config;
 use sysit::cpu;
 use sysit::memory;
@@ -32,24 +33,25 @@ use colored::control::set_override;
 const NEW_LINE: char = '\n';
 const CARRIAGE_RETURN: char = '\r';
 
-async fn line(config: &Config) -> Result<String, heim::Error> {
-    Ok(format!(
+fn line(config: &Config, system: &System) -> String {
+    format!(
         "M:{} | C:{} @ {} | T:{}",
-        memory::usage(config).await?,
-        cpu::usage(config).await?,
-        cpu::frequency().await?,
-        sensors::temperature(config).await?
-    ))
+        memory::usage(config, system),
+        cpu::usage(config, system),
+        cpu::frequency(system),
+        sensors::temperature(config, system)
+    )
 }
 
-async fn render_line(delimiter: char, config: &Config) -> Result<(), heim::Error> {
-    print!("{}{}", line(config).await?, delimiter);
-    Ok(())
+fn render_line(delimiter: char, config: &Config, system: &mut System) -> () {
+    system.refresh_all();
+    print!("{}{}", line(config, &*system), delimiter);
+    ()
 }
 
-#[async_std::main]
-async fn main() -> Result<(), heim::Error> {
+fn main() -> Result<()> {
     let config: Config = Config::parse();
+    let mut system = System::new_all();
 
     if config.colors {
         set_override(true);
@@ -64,12 +66,12 @@ async fn main() -> Result<(), heim::Error> {
             } else {
                 CARRIAGE_RETURN
             };
-            render_line(delimiter, &config).await?;
+            render_line(delimiter, &config, &mut system);
             stdout().flush()?;
-            Delay::new(Duration::from_secs(config.interval)).await;
+            thread::sleep(Duration::from_secs(config.interval));
         }
     } else {
-        render_line(NEW_LINE, &config).await?;
+        render_line(NEW_LINE, &config, &mut system);
     }
     Ok(())
 }
