@@ -12,7 +12,7 @@ cargo install sysit
 
 ## About
 System resources overview within 40 characters. Relies on
-[heim](https://heim-rs.github.io/) to get all the relevant system
+[sysinfo](https://github.com/GuillaumeGomez/sysinfo) to get all the relevant system
 information.
 
 ![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
@@ -65,8 +65,8 @@ OPTIONS:
 ## Reasoning
 When working headlessly with tmux or even when working on a desktop,
 being able to quickly see basic system informatino can be useful.
-There are various system monitors and even `btm` (also based on
-`heim`), but you have to actively switch to them.
+There's `btm` (also based on `sysinfo`, `heim`), but you have to
+actively switch to them.
 
 For instance, when overclocking the RPi, it makes sense to monitor the
 CPU frequency and temperature. Inspired by [cpu-temp-speed](https://gitlab.manjaro.org/manjaro-arm/packages/community/cpu-temp-speed)
