@@ -33,7 +33,12 @@ pub fn usage(config: &Config, system: &System) -> String {
 }
 
 pub fn frequency(system: &System) -> String {
-    let processor = system.get_global_processor_info();
+    let frequency = system
+        .get_processors()
+        .iter()
+        .map(|p| p.get_frequency())
+        .max()
+        .unwrap_or(0);
 
-    format!("{:4} MHz", processor.get_frequency())
+    format!("{:4} MHz", frequency)
 }
