@@ -6,9 +6,13 @@ System Sit, check on the system with a quick glance!
 
 ## Install
 
+Build it:
 ```
 cargo install sysit
 ```
+or download the pre-built binaries for the
+[latest release](https://github.com/crodjer/sysit/releases/latest).
+
 
 ## About
 System resources overview within 40 characters. Relies on
