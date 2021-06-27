@@ -19,34 +19,20 @@ use super::colors::colorize;
 use super::config::Config;
 use sysinfo::{ComponentExt, System, SystemExt};
 
-fn max_temperature(system: &System) -> Option<f32> {
-    let mut max_temp: Option<f32> = None;
-
-    for component in system.get_components() {
-        let temp = component.get_temperature();
-
-        max_temp = match max_temp {
-            Some(current_max) => {
-                if temp > current_max {
-                    Some(temp)
-                } else {
-                    Some(current_max)
-                }
-            }
-            None => Some(temp),
-        };
-    }
-
-    max_temp
+fn max_temperature(system: &System) -> f32 {
+    system
+        .get_components()
+        .iter()
+        .rfold(0.0, |acc, x| acc.max(x.get_temperature()))
 }
 
 pub fn temperature(config: &Config, system: &System) -> String {
-    max_temperature(system)
-        .map(|t| {
-            format!(
-                "{}°C",
-                colorize(t, config.threshold_temp_hot, config.threshold_temp_warm)
-            )
-        })
-        .unwrap_or(String::from("N/A"))
+    format!(
+        "{}°C",
+        colorize(
+            max_temperature(system),
+            config.threshold_temp_hot,
+            config.threshold_temp_warm
+        )
+    )
 }
