@@ -4,6 +4,13 @@ System Sit, check on the system with a quick glance!
 [![Crate](https://img.shields.io/crates/v/sysit.svg)](https://crates.io/crates/sysit)
 [![Build](https://github.com/crodjer/sysit/workflows/CI/badge.svg?branch=main)](https://github.com/crodjer/sysit/actions?workflow=CI)
 
+## About
+System resources overview within 40 characters. Relies on
+[sysinfo](https://github.com/GuillaumeGomez/sysinfo) to get all the relevant system
+information.
+
+![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
+
 ## Install
 
 Build it:
@@ -12,59 +19,6 @@ cargo install sysit
 ```
 or download the pre-built binaries for the
 [latest release](https://github.com/crodjer/sysit/releases/latest).
-
-
-## About
-System resources overview within 40 characters. Relies on
-[sysinfo](https://github.com/GuillaumeGomez/sysinfo) to get all the relevant system
-information.
-
-![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
-
-```
-sysit
-Get system resources overview in 40 characters. For usage details, try --help
-
-USAGE:
-    sysit [FLAGS] [OPTIONS]
-
-FLAGS:
-    -c, --colors       force output to be always colorized
-    -h, --help         Prints help information
-    -l, --log          run in log mode (will continuously append a row to standard output)
-        --no-colors    force output to be never colorized
-    -V, --version      Prints version information
-    -w, --watch        run in watch mode (will act as if running with the watch)
-
-OPTIONS:
-    -i, --interval <interval>
-            update interval in seconds for watch/log mode [default: 1]
-
-        --threshold-cpu-high <threshold-cpu-high>
-            the threshold for high cpu usage (higher values will be rendered in red) [default:
-            80.0]
-
-        --threshold-cpu-medium <threshold-cpu-medium>
-            the threshold for medium cpu usage (higher values will be rendered in yellow) [default:
-            50.0]
-
-        --threshold-memory-high <threshold-memory-high>
-            the threshold for high memory usage (higher values will be rendered in red) [default:
-            80.0]
-
-        --threshold-memory-medium <threshold-memory-medium>
-            the threshold for medium memory usage (higher values will be rendered in yellow)
-            [default: 50.0]
-
-        --threshold-temp-hot <threshold-temp-hot>
-            the threshold for high temperature (higher values will be rendered in red) [default:
-            75.0]
-
-        --threshold-temp-warm <threshold-temp-warm>
-            the threshold for warm temperature (higher values will be rendered in yellow) [default:
-            55.0]
-
-```
 
 ## Reasoning
 When working headlessly with tmux or even when working on a desktop,
@@ -116,4 +70,50 @@ M: 11% | C: 100% @ 2100 MHz | T: 60°C
 M: 11% | C: 100% @ 2100 MHz | T: 63°C
 M: 11% | C: 100% @ 2100 MHz | T: 61°C
 M: 11% | C: 0% @ 600 MHz | T: 59°C
+```
+
+## Help
+```
+sysit
+Get system resources overview in 40 characters. For usage details, try --help
+
+USAGE:
+    sysit [FLAGS] [OPTIONS]
+
+FLAGS:
+    -c, --colors       force output to be always colorized
+    -h, --help         Prints help information
+    -l, --log          run in log mode (will continuously append a row to standard output)
+        --no-colors    force output to be never colorized
+    -V, --version      Prints version information
+    -w, --watch        run in watch mode (will act as if running with the watch)
+
+OPTIONS:
+    -i, --interval <interval>
+            update interval in seconds for watch/log mode [default: 1]
+
+        --threshold-cpu-high <threshold-cpu-high>
+            the threshold for high cpu usage (higher values will be rendered in red) [default:
+            80.0]
+
+        --threshold-cpu-medium <threshold-cpu-medium>
+            the threshold for medium cpu usage (higher values will be rendered in yellow) [default:
+            50.0]
+
+        --threshold-memory-high <threshold-memory-high>
+            the threshold for high memory usage (higher values will be rendered in red) [default:
+            80.0]
+
+        --threshold-memory-medium <threshold-memory-medium>
+            the threshold for medium memory usage (higher values will be rendered in yellow)
+            [default: 50.0]
+
+        --threshold-temp-hot <threshold-temp-hot>
+            the threshold for high temperature (higher values will be rendered in red) [default:
+            75.0]
+
+        --threshold-temp-warm <threshold-temp-warm>
+            the threshold for warm temperature (higher values will be rendered in yellow) [default:
+            55.0]
+
 ```
