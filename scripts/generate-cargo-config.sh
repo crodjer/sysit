@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )"/.. &> /dev/null && pwd )"
-cd $ROOT_DIR
-
 TARGET=$1
 LINKER=$2
 
