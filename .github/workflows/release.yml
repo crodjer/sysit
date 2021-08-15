@@ -85,7 +85,7 @@ jobs:
       run: |
         sudo apt update
         sudo apt install ${{ matrix.linker }}
-        ./scripts/generate-cargo-config.sh ${{ matrix.target }} ${{ matrix.linker }}
+        ./scripts/generate-cargo-config.sh ${{ matrix.target }} ${{ matrix.linker }} >> .config/config
 
     - name: Install Rust
       run: |
