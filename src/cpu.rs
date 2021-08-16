@@ -20,12 +20,12 @@ use super::config::Config;
 use sysinfo::{ProcessorExt, System, SystemExt};
 
 pub fn usage(config: &Config, system: &System) -> String {
-    let processor = system.get_global_processor_info();
+    let processor = system.global_processor_info();
 
     format!(
         "{}%",
         colorize(
-            processor.get_cpu_usage(),
+            processor.cpu_usage(),
             config.threshold_cpu_high,
             config.threshold_cpu_medium
         )
@@ -33,12 +33,5 @@ pub fn usage(config: &Config, system: &System) -> String {
 }
 
 pub fn frequency(system: &System) -> String {
-    let frequency = system
-        .get_processors()
-        .iter()
-        .map(|p| p.get_frequency())
-        .max()
-        .unwrap_or(0);
-
-    format!("{:4} MHz", frequency)
+    format!("{:4} MHz", system.global_processor_info().frequency())
 }
