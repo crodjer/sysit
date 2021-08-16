@@ -20,8 +20,8 @@ use super::config::Config;
 use sysinfo::{System, SystemExt};
 
 pub fn usage(config: &Config, system: &System) -> String {
-    let total = system.get_total_memory() as f32;
-    let available = system.get_available_memory() as f32;
+    let total = system.total_memory() as f32;
+    let available = system.available_memory() as f32;
     let usage = (100.0 * (total - available) / total).round();
     format!(
         "{}%",

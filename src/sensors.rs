@@ -21,9 +21,9 @@ use sysinfo::{ComponentExt, System, SystemExt};
 
 fn max_temperature(system: &System) -> f32 {
     system
-        .get_components()
+        .components()
         .iter()
-        .rfold(0.0, |acc, x| acc.max(x.get_temperature()))
+        .rfold(0.0, |acc, x| acc.max(x.temperature()))
 }
 
 pub fn temperature(config: &Config, system: &System) -> String {
