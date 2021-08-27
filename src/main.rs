@@ -26,6 +26,7 @@ use sysinfo::{System, SystemExt};
 use sysit::config::Config;
 use sysit::cpu;
 use sysit::memory;
+use sysit::ping;
 use sysit::sensors;
 
 use colored::control::set_override;
@@ -33,25 +34,34 @@ use colored::control::set_override;
 const NEW_LINE: char = '\n';
 const CARRIAGE_RETURN: char = '\r';
 
-fn line(config: &Config, system: &System) -> String {
+struct State {
+    config: Config,
+    system: System,
+    ping: ping::Ping,
+}
+
+fn line(state: &State) -> String {
     format!(
-        "M:{} | C:{} @ {} | T:{}",
-        memory::usage(config, system),
-        cpu::usage(config, system),
-        cpu::frequency(system),
-        sensors::temperature(config, system)
+        "M:{} | C:{} @ {} | T:{} | P: {}",
+        memory::usage(&state.config, &state.system),
+        cpu::usage(&state.config, &state.system),
+        cpu::frequency(&state.system),
+        sensors::temperature(&state.config, &state.system),
+        state.ping.current()
     )
 }
 
-fn render_line(delimiter: char, config: &Config, system: &mut System) -> () {
-    system.refresh_all();
-    print!("{}{}", line(config, &*system), delimiter);
+fn render_line(delimiter: char, state: &mut State) -> () {
+    state.system.refresh_all();
+    print!("{}{}", line(state), delimiter);
     ()
 }
 
 fn main() -> Result<()> {
     let config: Config = Config::parse();
-    let mut system = System::new_all();
+    let system = System::new_all();
+    let ping = ping::Ping::new(config.ping_host.clone());
+    ping.wait();
 
     if config.colors {
         set_override(true);
@@ -59,19 +69,26 @@ fn main() -> Result<()> {
         set_override(false);
     }
 
-    if config.watch || config.log {
+    let mut state = State {
+        config,
+        system,
+        ping,
+    };
+
+    let delimiter = if state.config.watch {
+        CARRIAGE_RETURN
+    } else {
+        NEW_LINE
+    };
+
+    if state.config.watch || state.config.log {
         loop {
-            let delimiter = if config.log {
-                NEW_LINE
-            } else {
-                CARRIAGE_RETURN
-            };
-            render_line(delimiter, &config, &mut system);
+            render_line(delimiter, &mut state);
             stdout().flush()?;
-            thread::sleep(Duration::from_secs(config.interval));
+            thread::sleep(Duration::from_secs(state.config.interval));
         }
     } else {
-        render_line(NEW_LINE, &config, &mut system);
+        render_line(delimiter, &mut state);
     }
     Ok(())
 }

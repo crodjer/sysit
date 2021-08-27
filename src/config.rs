@@ -17,13 +17,21 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use clap::Clap;
 
-/// Get system resources overview in 40 characters
+/// Get system resources overview in 50 characters
 /// For usage details, try --help
+///
+/// Understanding the output:
+///
+///   M: Memory Usage
+///   C: CPU Usage and Frequency
+///   T: Temperature for the hottest sensor
+///   P: Ping
 #[derive(Clap)]
+#[clap(verbatim_doc_comment)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Rohan Jain")]
 pub struct Config {
     /// run in watch mode
-    /// (will act as if running with the watch)
+    /// (as if running with the watch command)
     #[clap(short, long)]
     pub watch: bool,
 
@@ -73,4 +81,8 @@ pub struct Config {
     /// (higher values will be rendered in red)
     #[clap(long, default_value = "80.0")]
     pub threshold_cpu_high: f32,
+
+    /// host to use for testing the ping
+    #[clap(long, default_value = "1.0.0.1")]
+    pub ping_host: String,
 }
