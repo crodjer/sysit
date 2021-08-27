@@ -13,6 +13,7 @@ information.
 
 ## Install
 If you are on Arch, install via Aur: https://aur.archlinux.org/packages/sysit-bin/
+
 Otherwise, build it:
 ```
 cargo install sysit
