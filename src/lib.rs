@@ -19,4 +19,5 @@ pub mod colors;
 pub mod config;
 pub mod cpu;
 pub mod memory;
+pub mod ping;
 pub mod sensors;
