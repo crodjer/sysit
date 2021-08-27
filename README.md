@@ -12,13 +12,14 @@ information.
 ![demo](https://raw.githubusercontent.com/crodjer/sysit/main/assets/sysit-demo.gif)
 
 ## Install
-
-Build it:
+If you are on Arch, install via Aur: https://aur.archlinux.org/packages/sysit-bin/
+Otherwise, build it:
 ```
 cargo install sysit
 ```
 or download the pre-built binaries for the
 [latest release](https://github.com/crodjer/sysit/releases/latest).
+
 
 ## Reasoning
 The ability to quickly see basic system information without needing a
