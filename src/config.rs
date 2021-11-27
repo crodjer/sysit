@@ -85,4 +85,8 @@ pub struct Config {
     /// host to use for testing the ping
     #[clap(long, default_value = "1.0.0.1")]
     pub ping_host: String,
+
+    /// show CPU frequency
+    #[clap(short, long)]
+    pub frequency: bool,
 }

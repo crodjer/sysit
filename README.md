@@ -98,6 +98,9 @@ FLAGS:
     -c, --colors
             force output to be always colorized
 
+    -f, --frequency
+            show CPU frequency
+
     -h, --help
             Print help information
 
