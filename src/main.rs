@@ -42,7 +42,7 @@ struct State {
 
 fn line(state: &State) -> String {
     format!(
-        "M:{} | C:{} | T:{} | P: {}",
+        " {} {} {}   {}",
         memory::usage(&state.config, &state.system),
         cpu::overview(&state.config, &state.system),
         sensors::temperature(&state.config, &state.system),
