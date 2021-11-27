@@ -15,7 +15,7 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-use clap::Clap;
+use clap::Parser;
 
 /// Get system resources overview in 50 characters
 /// For usage details, try --help
@@ -26,7 +26,7 @@ use clap::Clap;
 ///   C: CPU Usage and Frequency
 ///   T: Temperature for the hottest sensor
 ///   P: Ping
-#[derive(Clap)]
+#[derive(Parser, Debug)]
 #[clap(verbatim_doc_comment)]
 #[clap(version = env!("CARGO_PKG_VERSION"), author = "Rohan Jain")]
 pub struct Config {
