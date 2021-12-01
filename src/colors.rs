@@ -17,7 +17,7 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use colored::*;
 
-pub fn colorize(metric: f32, high: f32, mid: f32) -> String {
+pub fn colorize(output: String, metric: f32, high: f32, mid: f32) -> String {
     let color = if metric > high {
         "red"
     } else if metric > mid {
@@ -26,7 +26,7 @@ pub fn colorize(metric: f32, high: f32, mid: f32) -> String {
         "green"
     };
 
-    format!("{:3.0}", metric as i32).color(color).to_string()
+    format!("{:<6}", output).color(color).to_string()
 }
 
 #[cfg(test)]
@@ -35,26 +35,25 @@ mod tests {
 
     #[test]
     fn test_red() {
-        assert_eq!(colorize(90.0, 80.0, 50.0), " 90".red().to_string());
+        assert_eq!(
+            colorize("90%".to_string(), 90.0, 80.0, 50.0),
+            "90%   ".red().to_string()
+        );
     }
 
     #[test]
     fn test_yellow() {
-        assert_eq!(colorize(75.0, 80.0, 50.0), " 75".yellow().to_string());
+        assert_eq!(
+            colorize("FooBar".to_string(), 75.0, 80.0, 50.0),
+            "FooBar".yellow().to_string()
+        );
     }
 
     #[test]
     fn test_green() {
-        assert_eq!(colorize(15.0, 80.0, 50.0), " 15".green().to_string());
-    }
-
-    #[test]
-    fn test_one_digit() {
-        assert_eq!(colorize(1.0, 80.0, 50.0), "  1".green().to_string());
-    }
-
-    #[test]
-    fn test_three_digit() {
-        assert_eq!(colorize(100.0, 80.0, 50.0), "100".red().to_string());
+        assert_eq!(
+            colorize("15.5 ms".to_string(), 15.0, 80.0, 50.0),
+            "15.5 ms".green().to_string()
+        );
     }
 }

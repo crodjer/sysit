@@ -80,9 +80,8 @@ impl Ping {
     pub fn current(self: &Ping) -> String {
         // Get the current ping (or N/A if we couldn't obtain it)
         match self.ping.lock().unwrap().as_ref() {
-            None => "N/A",
-            Some(ping) => ping.as_str(),
+            None => "N/A".to_string(),
+            Some(ping) => format!("  {}", ping),
         }
-        .to_string()
     }
 }

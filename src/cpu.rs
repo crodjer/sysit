@@ -17,32 +17,33 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 
 use super::colors::colorize;
 use super::config::Config;
+use colored::*;
 use sysinfo::{ProcessorExt, System, SystemExt};
 
 pub fn overview(config: &Config, system: &System) -> String {
     if config.frequency {
-        format!("{} @{}", usage(config, system), frequency(system))
+        format!("{} {}", usage(config, system), frequency(system))
     } else {
         usage(config, system)
     }
 }
 
 fn usage(config: &Config, system: &System) -> String {
-    let processor = system.global_processor_info();
+    let usage = system.global_processor_info().cpu_usage();
 
-    format!(
-        "{}%",
-        colorize(
-            processor.cpu_usage(),
-            config.threshold_cpu_high,
-            config.threshold_cpu_medium
-        )
+    colorize(
+        format!(" {:.0}%", usage),
+        usage,
+        config.threshold_cpu_high,
+        config.threshold_cpu_medium,
     )
 }
 
 fn frequency(system: &System) -> String {
     format!(
-        "{:.2} GHz",
+        "@{:.1} GHz ",
         system.global_processor_info().frequency() as f32 / 1000.0
     )
+    .cyan()
+    .to_string()
 }
