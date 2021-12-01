@@ -37,10 +37,10 @@ context switch can be useful. `sysit` is easy to incorporate in the
 various status bars - such as that of `tmux`, `i3`/`sway` etc.
 
 ## Understanding the output
-  Memory Usage
-  CPU Information (usage and optionally frequency)
-  Temperature for the hottest sensor
-  Network Ping
+  Memory Usage  
+  CPU Information (usage and optionally frequency)  
+  Temperature for the hottest sensor  
+  Network Ping  
 
 # Usage
 
