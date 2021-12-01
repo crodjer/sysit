@@ -41,13 +41,13 @@ struct State {
 }
 
 fn line(state: &State) -> String {
-    format!(
-        " {} {} {}   {}",
+    [
         memory::usage(&state.config, &state.system),
         cpu::overview(&state.config, &state.system),
         sensors::temperature(&state.config, &state.system),
-        state.ping.current()
-    )
+        state.ping.current(),
+    ]
+    .join(" ")
 }
 
 fn render_line(delimiter: char, state: &mut State) -> () {

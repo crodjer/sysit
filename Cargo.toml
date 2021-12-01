@@ -20,7 +20,7 @@ readme = "README.md"
 homepage = "https://github.com/crodjer/sysit"
 version = "0.7.0"
 authors = ["Rohan Jain <crodjer@gmail.com>"]
-edition = "2018"
+edition = "2021"
 license = "GPL-3.0-or-later"
 
 [dependencies]

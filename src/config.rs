@@ -21,10 +21,10 @@ use clap::Parser;
 /// For usage details, try --help
 ///
 /// Understanding the output:
-///     Memory Usage{n}
-///     CPU Information (usage and optionally frequency) {n}
-///     Temperature for the hottest sensor{n}
-///     Ping (only available in the long running log/watch mode)
+///    Memory Usage{n}
+///    CPU Information (usage and optionally frequency) {n}
+///    Temperature for the hottest sensor{n}
+///    Network Ping
 ///
 #[derive(Parser, Debug)]
 #[clap(verbatim_doc_comment)]

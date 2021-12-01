@@ -27,12 +27,12 @@ fn max_temperature(system: &System) -> f32 {
 }
 
 pub fn temperature(config: &Config, system: &System) -> String {
-    format!(
-        "{}°C",
-        colorize(
-            max_temperature(system),
-            config.threshold_temp_hot,
-            config.threshold_temp_warm
-        )
+    let temp = max_temperature(system);
+
+    colorize(
+        format!(" {}°C ", temp),
+        temp,
+        config.threshold_temp_hot,
+        config.threshold_temp_warm,
     )
 }

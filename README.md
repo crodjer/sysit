@@ -28,10 +28,10 @@ context switch can be useful. `sysit` is easy to incorporate in the
 various status bars - such as that of `tmux`, `i3`/`sway` etc.
 
 ## Understanding the output
-  Memory Usage
- CPU Usage and Frequency
- Temperature for the hottest sensor.
-   Network Ping
+  Memory Usage
+  CPU Information (usage and optionally frequency)
+  Temperature for the hottest sensor
+  Network Ping
 
 # Usage
 
@@ -40,7 +40,7 @@ Simply type `sysit` for a quick glance at the system information.
 ```
 sysit on  main is 📦 v0.6.0 via 🦀 v1.56.1
 at 18:43:42 ❯ sysit
-  32%  12%  41°C   5.13 ms
+ 21%   5%    45°C    12.0 ms
 ```
 
 This can also be used with a desktop manager's applets. For example,
@@ -51,7 +51,7 @@ Xfce's `genmon`.
 Works as if `watch sysit`. Can be used within tmux status line for
 continuous monitoring. Eg:
 ```tmux.conf
-set -g status-right '#[fg=yellow] #(sysit -wi 2) #[fg=colour235,bg=colour252,bold] %a %d %b %H:% %S #[fg=colour252,bg=colour238,nobold]#[fg=colour245,bg=colour238,bold]'
+set -g status-right '#[fg=black,bg=blue] #(sysit -wi 2) '
 ```
 Watch mode with `sysit -wi 2` has a benefit of maintaining a single
 process. Just using plain `sysit` command will also work, but that'd
@@ -62,15 +62,14 @@ At times it can be handy to log system stats, for instance, while
 benchmarking.
 ```
 sysit on  main is 📦 v0.6.0 via 🦀 v1.56.1
-at 18:45:26 ❯ sysit -l
-  32%  12%  49°C   4.64 ms
-  32%  54%  58°C   4.61 ms
-  32%  51%  56°C   4.63 ms
-  32%  56%  56°C   4.39 ms
-  32%  51%  61°C   4.71 ms
-  32%   4%  58°C   4.69 ms
-  32%   1%  51°C   12.4 ms
-  32%  16%  50°C   6.76 ms
+at 18:45:26 ❯ sysit -lf
+ 21%   5%   @2.9 GHz   44°C    9.91 ms
+ 21%   2%   @2.1 GHz   44°C    8.43 ms
+ 21%   3%   @2.2 GHz   46°C    14.4 ms
+ 21%   1%   @3.8 GHz   46°C    139 ms
+ 24%   63%  @4.1 GHz   55°C    17.9 ms
+ 25%   10%  @4.0 GHz   48°C    354 ms
+ 26%   10%  @4.1 GHz   45°C    472 ms
 ```
 
 ## Help
@@ -81,10 +80,10 @@ Get system resources overview in 50 characters
 For usage details, try --help
 
 Understanding the output:
-    Memory Usage{n}
-    CPU Information (usage and optionally frequency) {n}
-    Temperature for the hottest sensor{n}
-    Ping (only available in the long running log/watch mode)
+   Memory Usage
+   CPU Information (usage and optionally frequency)
+   Temperature for the hottest sensor
+   Network Ping
 
 USAGE:
     sysit [OPTIONS]

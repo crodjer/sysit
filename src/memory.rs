@@ -23,12 +23,10 @@ pub fn usage(config: &Config, system: &System) -> String {
     let total = system.total_memory() as f32;
     let available = system.available_memory() as f32;
     let usage = (100.0 * (total - available) / total).round();
-    format!(
-        "{}%",
-        colorize(
-            usage,
-            config.threshold_cpu_high,
-            config.threshold_cpu_medium
-        )
+    colorize(
+        format!(" {}%", usage),
+        usage,
+        config.threshold_cpu_high,
+        config.threshold_cpu_medium,
     )
 }
