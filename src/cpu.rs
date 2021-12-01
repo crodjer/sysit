@@ -21,7 +21,7 @@ use sysinfo::{ProcessorExt, System, SystemExt};
 
 pub fn overview(config: &Config, system: &System) -> String {
     if config.frequency {
-        format!("{} @ {}", usage(config, system), frequency(system))
+        format!("{} @{}", usage(config, system), frequency(system))
     } else {
         usage(config, system)
     }
@@ -41,5 +41,8 @@ fn usage(config: &Config, system: &System) -> String {
 }
 
 fn frequency(system: &System) -> String {
-    format!("{:4} MHz", system.global_processor_info().frequency())
+    format!(
+        "{:.2} GHz",
+        system.global_processor_info().frequency() as f32 / 1000.0
+    )
 }
