@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/usr/bin/env bash
 
 ARCH=$(uname -sm)
 BIN_DIR=${1:-/usr/local/bin}
