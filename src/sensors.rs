@@ -30,7 +30,7 @@ pub fn temperature(config: &Config, system: &System) -> String {
     let temp = max_temperature(system);
 
     colorize(
-        format!(" {}°C ", temp),
+        format!(" {:.0}°C ", temp),
         temp,
         config.threshold_temp_hot,
         config.threshold_temp_warm,
