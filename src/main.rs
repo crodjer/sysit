@@ -37,7 +37,7 @@ const CARRIAGE_RETURN: char = '\r';
 struct State {
     config: Config,
     system: System,
-    ping: ping::Ping,
+    ping: ping::PingManager,
 }
 
 fn line(state: &State) -> String {
@@ -59,7 +59,7 @@ fn render_line(delimiter: char, state: &mut State) -> () {
 fn main() -> Result<()> {
     let config: Config = Config::parse();
     let system = System::new_all();
-    let ping = ping::Ping::new(config.ping_host.clone());
+    let ping = ping::PingManager::new(config.ping_host.clone());
     ping.wait();
 
     if config.colors {

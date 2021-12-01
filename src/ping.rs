@@ -15,37 +15,43 @@ You should have received a copy of the GNU General Public License along with
 this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+use super::colors::colorize;
 use std::io::{BufRead, Result};
 use std::process::Command;
 use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::Duration;
 
-fn parse_ping(output: Result<String>) -> Option<String> {
+type Ping = (f32, String);
+
+fn parse_ping(output: Result<String>) -> Option<Ping> {
     let output = output.ok()?;
     if output.contains("time=") {
-        Some(String::from(output.split("=").last().unwrap()))
+        let mut ping_output = output.split("=").last().unwrap().split(" ");
+        let ping: f32 = ping_output.next().unwrap().parse().unwrap();
+        let unit = ping_output.next().unwrap();
+        Some((ping, unit.to_string()))
     } else {
         None
     }
 }
 
-pub struct Ping {
-    ping: Arc<Mutex<Option<String>>>,
+pub struct PingManager {
+    ping: Arc<Mutex<Option<Ping>>>,
     host: String,
 }
 
-impl Ping {
-    pub fn new(host: String) -> Ping {
-        let ping = Ping {
+impl PingManager {
+    pub fn new(host: String) -> PingManager {
+        let ping_manager = PingManager {
             host,
             ping: Arc::new(Mutex::new(None)),
         };
-        ping.start();
-        ping
+        ping_manager.start();
+        ping_manager
     }
 
-    fn start(self: &Ping) -> () {
+    fn start(self: &PingManager) -> () {
         // Start the ping subprocess and its monitoring thread.
         let ping = self.ping.clone();
         let host = self.host.clone();
@@ -67,7 +73,7 @@ impl Ping {
         });
     }
 
-    pub fn wait(self: &Ping) -> () {
+    pub fn wait(self: &PingManager) -> () {
         // Wait (at most 200ms) for the first ping.
         for _ in 0..20 {
             if self.ping.lock().unwrap().is_some() {
@@ -77,11 +83,11 @@ impl Ping {
         }
     }
 
-    pub fn current(self: &Ping) -> String {
+    pub fn current(self: &PingManager) -> String {
         // Get the current ping (or N/A if we couldn't obtain it)
         match self.ping.lock().unwrap().as_ref() {
             None => "N/A".to_string(),
-            Some(ping) => format!("  {}", ping),
+            Some(ping) => colorize(format!("  {} {}", ping.0, ping.1), ping.0, 30.0, 100.0),
         }
     }
 }
