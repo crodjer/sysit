@@ -14,12 +14,21 @@ information.
 ## Install
 If you are on Arch, install via Aur: https://aur.archlinux.org/packages/sysit-bin/
 
-Otherwise, build it:
+On other platforms, you can use the install script, which will install
+a [pre-built binary](https://github.com/crodjer/sysit/releases/latest).
+To install at `/usr/local/bin/`:
+```
+curl -s https://raw.githubusercontent.com/crodjer/sysit/main/scripts/install.sh | sudo bash
+```
+Or, to install at a location of your choice, say `~/.local/bin`:
+```
+curl -s https://raw.githubusercontent.com/crodjer/sysit/main/scripts/install.sh | bash -s ~/.local/bin
+```
+
+You can always use cargo if your platform isn't supported:
 ```
 cargo install sysit
 ```
-or download the pre-built binaries for the
-[latest release](https://github.com/crodjer/sysit/releases/latest).
 
 
 ## Reasoning
