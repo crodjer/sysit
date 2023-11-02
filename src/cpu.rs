@@ -18,7 +18,7 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 use super::colors::colorize;
 use super::config::Config;
 use colored::*;
-use sysinfo::{ProcessorExt, System, SystemExt};
+use sysinfo::{CpuExt, System, SystemExt};
 
 pub fn overview(config: &Config, system: &System) -> String {
     if config.frequency {
@@ -29,7 +29,7 @@ pub fn overview(config: &Config, system: &System) -> String {
 }
 
 fn usage(config: &Config, system: &System) -> String {
-    let usage = system.global_processor_info().cpu_usage();
+    let usage = system.global_cpu_info().cpu_usage();
 
     colorize(
         format!(" {:.0}%", usage),
@@ -42,7 +42,7 @@ fn usage(config: &Config, system: &System) -> String {
 fn frequency(system: &System) -> String {
     format!(
         "@{:.1} GHz ",
-        system.global_processor_info().frequency() as f32 / 1000.0
+        system.global_cpu_info().frequency() as f32 / 1000.0
     )
     .cyan()
     .to_string()
