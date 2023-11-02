@@ -19,4 +19,4 @@ case "$RELEASE_LEVEL" in
         ;;
 esac
 
-cargo release --execute --sign --no-publish --no-dev-version $RELEASE_LEVEL
+cargo release --execute --sign --no-publish $RELEASE_LEVEL
