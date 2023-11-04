@@ -16,6 +16,9 @@ case $ARCH in
     "Darwin x86_64")
         TARGET="x86_64-apple-darwin"
         ;;
+    "Darwin arm64")
+        TARGET="aarch64-apple-darwin"
+        ;;
 esac
 
 if [ -z "$TARGET" ]; then
