@@ -68,7 +68,7 @@ jobs:
           os: macos-latest
           rust: stable
           target: aarch64-apple-darwin
-          cross: true
+          cross: false
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
@@ -88,8 +88,8 @@ jobs:
     - name: Install Linker
       if: matrix.cross
       run: |
-        sudo apt update
-        sudo apt install ${{ matrix.linker }}
+        sudo apt-get update
+        sudo apt-get install ${{ matrix.linker }}
         cat .cargo/config.github >> .cargo/config
 
     - name: Install Rust
