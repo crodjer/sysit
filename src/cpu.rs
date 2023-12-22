@@ -18,9 +18,11 @@ this program.  If not, see <https://www.gnu.org/licenses/>.
 use super::colors::colorize;
 use super::config::Config;
 use colored::*;
-use sysinfo::{CpuExt, System, SystemExt};
+use sysinfo::{CpuExt, CpuRefreshKind, System, SystemExt};
 
-pub fn overview(config: &Config, system: &System) -> String {
+pub fn overview(config: &Config, system: &mut System) -> String {
+    system.refresh_cpu_specifics(CpuRefreshKind::everything());
+
     if config.frequency {
         format!("{} {}", usage(config, system), frequency(system))
     } else {
@@ -28,7 +30,7 @@ pub fn overview(config: &Config, system: &System) -> String {
     }
 }
 
-fn usage(config: &Config, system: &System) -> String {
+fn usage(config: &Config, system: &mut System) -> String {
     let usage = system.global_cpu_info().cpu_usage();
 
     colorize(

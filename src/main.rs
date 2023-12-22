@@ -40,18 +40,17 @@ struct State {
     ping: ping::PingManager,
 }
 
-fn line(state: &State) -> String {
+fn line(state: &mut State) -> String {
     [
-        memory::usage(&state.config, &state.system),
-        cpu::overview(&state.config, &state.system),
-        sensors::temperature(&state.config, &state.system),
+        memory::usage(&state.config, &mut state.system),
+        cpu::overview(&state.config, &mut state.system),
+        sensors::temperature(&state.config, &mut state.system),
         state.ping.current(),
     ]
     .join(" ")
 }
 
 fn render_line(delimiter: char, state: &mut State) -> () {
-    state.system.refresh_all();
     print!("{}{}", line(state), delimiter);
     ()
 }
