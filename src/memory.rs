@@ -19,7 +19,9 @@ use super::colors::colorize;
 use super::config::Config;
 use sysinfo::{System, SystemExt};
 
-pub fn usage(config: &Config, system: &System) -> String {
+pub fn usage(config: &Config, system: &mut System) -> String {
+    system.refresh_memory();
+
     let total = system.total_memory() as f32;
     let available = system.available_memory() as f32;
     let usage = (100.0 * (total - available) / total).round();

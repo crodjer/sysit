@@ -19,14 +19,15 @@ use super::colors::colorize;
 use super::config::Config;
 use sysinfo::{ComponentExt, System, SystemExt};
 
-fn max_temperature(system: &System) -> f32 {
+fn max_temperature(system: &mut System) -> f32 {
+    system.refresh_components();
     system
         .components()
         .iter()
         .rfold(0.0, |acc, x| acc.max(x.temperature()))
 }
 
-pub fn temperature(config: &Config, system: &System) -> String {
+pub fn temperature(config: &Config, system: &mut System) -> String {
     let temp = max_temperature(system);
 
     colorize(
